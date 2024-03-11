@@ -1,6 +1,7 @@
 package com.customer_management.dao;
 
 import com.customer_management.entity.Customer;
+import com.customer_management.exception.AlreadyExistsException;
 import com.customer_management.repository.CustomerRepo;
 import com.customer_management.service.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,43 +35,48 @@ public class CustomerDaoImpl implements CustomerDao {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public List<Customer> listAllCustomers() {
-        return customerRepo.findAll();
+
+        List<Customer> customerList = customerRepo.findAll();
+
+        if(customerList.isEmpty()){
+            throw new RuntimeException("No customer registered!");
+        }
+
+        return customerList;
     }
 
     @Override
-    public Customer getCustomerById(long id) throws Exception {
+    public Customer getCustomerById(long id) {
 
         Optional<Customer> customer = customerRepo.findById(id);
 
         return customer.orElseThrow(
                 () -> {
-                    throw new NoSuchElementException("Customer not found with id " + id);
+                    throw new NoSuchElementException("Customer not found with id: " + id);
                 }
         );
     }
 
     @Override
-    public List<Customer> getCustomerByFirstName(String firstName) throws Exception {
+    public List<Customer> getCustomerByFirstName(String firstName) {
 
 
         Optional<List<Customer>> customer = customerRepo.findCustomerByFirstName(firstName);
 
-        customer.orElseThrow(
-                () -> {
-                    throw new RuntimeException("Customer not found with first-name " + firstName);
-                }
-        );
+        if(customer.get().isEmpty()){
+            throw new NoSuchElementException("Customer not found with name: "+firstName);
+        }
 
         return customer.get();
     }
 
     @Override
-    public Customer getCustomerByEmail(String email) throws Exception {
+    public Customer getCustomerByEmail(String email) {
         Optional<Customer> customer = customerRepo.findCustomerByEmail(email);
 
         customer.orElseThrow(
                 () -> {
-                    throw new RuntimeException("Customer not found with email " + email);
+                    throw new NoSuchElementException("Customer not found with email: " + email);
                 }
         );
 
@@ -78,11 +84,11 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer getCustomerByMobileNo(String mobileNo) throws Exception {
+    public Customer getCustomerByMobileNo(String mobileNo) {
         Optional<Customer> customer = customerRepo.findByMobileNo(mobileNo);
 
         customer.orElseThrow(()->{
-            throw new RuntimeException("Customer not found with mobile number " + mobileNo);
+            throw new NoSuchElementException("Customer not found with mobile number: " + mobileNo);
         });
 
         return  customer.get();
@@ -99,10 +105,10 @@ public class CustomerDaoImpl implements CustomerDao {
         Optional<Customer> customerByMobile = customerRepo.findByMobileNo(customer.getMobileNo());
 
         if (customerByEmail.isPresent()) {
-            throw new RuntimeException(customer.getEmail() + " Email already exist");
+            throw new AlreadyExistsException(customer.getEmail() + " Email already exist");
 
         } else if (customerByMobile.isPresent()) {
-            throw new RuntimeException(customer.getMobileNo() + " Mobile number already exist");
+            throw new AlreadyExistsException(customer.getMobileNo() + " Mobile number already exist");
         }
 
         return customerRepo.save(customer);
@@ -113,12 +119,12 @@ public class CustomerDaoImpl implements CustomerDao {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public Customer updateCustomer(Customer customer) throws Exception {
+    public Customer updateCustomer(Customer customer){
         Optional<Customer> currentCustomer = customerRepo.findById(customer.getId());
 
         currentCustomer.orElseThrow(
                 () -> {
-                    throw new RuntimeException("Customer not found with id " + customer.getId());
+                    throw new NoSuchElementException("Customer not found with id " + customer.getId());
                 }
         );
 
@@ -129,7 +135,7 @@ public class CustomerDaoImpl implements CustomerDao {
     //              Delete Methods
     ///////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public ResponseEntity<?> removeCustomerById(long id) throws Exception {
+    public ResponseEntity<?> removeCustomerById(long id){
 
         Optional<Customer> customer = customerRepo.findById(id);
 
@@ -145,12 +151,12 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public ResponseEntity<?> removeCustomerByEmail(String email) throws Exception {
+    public ResponseEntity<?> removeCustomerByEmail(String email) {
         Optional<Customer> customer = customerRepo.findCustomerByEmail(email);
 
         customer.orElseThrow(
                 () -> {
-                    throw new RuntimeException("Customer not found with email " + email);
+                    throw new NoSuchElementException("Customer not found with email " + email);
                 }
         );
 

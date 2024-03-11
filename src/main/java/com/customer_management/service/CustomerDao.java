@@ -11,11 +11,11 @@ public interface CustomerDao
     //                  Read methods
     ///////////////////////////////////////////////////////////////////////////////////////////////
     List<Customer> listAllCustomers();
-    Customer getCustomerById(long id) throws Exception;
-    List<Customer> getCustomerByFirstName(String firstName) throws Exception;
-    Customer getCustomerByEmail(String email) throws Exception;
+    Customer getCustomerById(long id);
+    List<Customer> getCustomerByFirstName(String firstName);
+    Customer getCustomerByEmail(String email);
 
-    Customer getCustomerByMobileNo(String mobileNo) throws Exception;
+    Customer getCustomerByMobileNo(String mobileNo);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //                      Create Methods
@@ -26,12 +26,12 @@ public interface CustomerDao
     //                      Update Methods
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    Customer updateCustomer(Customer customer) throws Exception;
+    Customer updateCustomer(Customer customer);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //              Delete Methods
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    ResponseEntity<?> removeCustomerById(long id) throws Exception;
-    ResponseEntity<?> removeCustomerByEmail(String email) throws Exception;
+    ResponseEntity<?> removeCustomerById(long id);
+    ResponseEntity<?> removeCustomerByEmail(String email);
     ResponseEntity<?> removeAllCustomer();
 }
