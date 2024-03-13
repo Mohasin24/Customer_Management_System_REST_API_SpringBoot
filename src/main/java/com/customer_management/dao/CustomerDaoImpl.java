@@ -1,17 +1,17 @@
 package com.customer_management.dao;
 
-import com.customer_management.entity.Customer;
-import com.customer_management.exception.AlreadyExistsException;
-import com.customer_management.repository.CustomerRepo;
-import com.customer_management.service.CustomerDao;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import com.customer_management.entity.Customer;
+import com.customer_management.exception.AlreadyExistsException;
+import com.customer_management.repository.CustomerRepo;
+import com.customer_management.service.CustomerDao;
 
 @Service
 public class CustomerDaoImpl implements CustomerDao {

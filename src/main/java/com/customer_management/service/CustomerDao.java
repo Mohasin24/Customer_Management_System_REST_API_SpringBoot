@@ -1,7 +1,11 @@
 package com.customer_management.service;
 
-import com.customer_management.entity.Customer;
+
+
+
 import org.springframework.http.ResponseEntity;
+
+import com.customer_management.entity.Customer;
 
 import java.util.List;
 
@@ -35,3 +39,4 @@ public interface CustomerDao
     ResponseEntity<?> removeCustomerByEmail(String email);
     ResponseEntity<?> removeAllCustomer();
 }
+

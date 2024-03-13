@@ -1,5 +1,6 @@
 package com.customer_management.exception;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -46,3 +47,4 @@ public class AlreadyExistsException extends RuntimeException{
                 '}';
     }
 }
+
